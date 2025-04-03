@@ -47,7 +47,7 @@ def gaussJordan(ao, bo):
     
     return b
 
-a = [[0, 2, 0], [4, -1, 0], [3, 2, -2]]
+a = [[2, 2, 0], [4, -1, 0], [3, 2, -2]]
 b = [7, 18, 16]
 x = gaussJordan(a, b)
 
