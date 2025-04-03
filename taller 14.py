@@ -1,51 +1,64 @@
-import random
-import numpy
-#PUNTO 1
-v1=[]
-v2=[]
-c=0
-n=int(input("Ingrese el tamaño de los vectores: "))
-for i in range(n):
-    a=random.randint(0,9)
-    b=random.randint(0,9)
-    v1.append(a)
-    v2.append(b)
-print(v1,v2)
-for i in range (len(v1)):
-    c+=v1[i]*v2[i]
-print(c)
-#PUNTO 2
-m1=[]
-m2=[]
-suma=[]
-multi=[]
-opeacion=input("1.Suma\n2.Multiplicacion\n3.Salir")
+import copy
 
+def imprimirSistema(a, b, etiqueta):
+    n = len(b)
+    print(etiqueta)
+    for i in range(n):
+        for j in range(n):
+            print(a[i][j], end = " ")
+        print("|", b[i])
+    print()
 
-for i in range(4):
-    filam1=[]
-    filam2=[]
-    fimasuma=[]
-    for j in range(4):
-        f=random.randint(0,9)
-        e=random.randint(0,9)
-        filam1.append(e)
-        filam2.append(f)
-        fimasuma.append(e+f)
-    m1.append(filam1)
-    m2.append(filam2)
-    suma.append(fimasuma)
-print("Matriz 1")
-for i in range(4):
-    print(*m1[i],end="\n")
-print("Matriz 2")
-for i in range(4):
-    print(*m2[i],end="\n")
-if opeacion=="1":
-    print("Suma de matrices")
-    for i in range(4):
-        print(*suma[i],end="\n")
-elif opeacion=="2":
-    print("Multiplicacion de matrices")
-    multi=numpy.dot(m1,m2)
-    print(*multi)
+def gaussJordan(ao, bo):
+    a = copy.deepcopy(ao)
+    b = copy.copy(bo)
+
+    n = len(b)
+    imprimirSistema(a, b, "Matriz inicial")
+    for i in range(n):
+        pivote = a[i][i]
+        if pivote == 0:
+            for k in range(i+1, n):
+                if a[k][i] != 0:
+                    # Intercambiar filas
+                    a[i], a[k] = a[k], a[i]
+                    b[i], b[k] = b[k], b[i]
+                    pivote = a[i][i]
+                    break
+            else:
+                raise ValueError(f"No se puede resolver el sistema, pivote en la posición ({i},{i}) es cero y no hay fila válida para intercambiar.")
+        
+        
+        #Dividir por el pivote
+        for j in range(n):
+            a[i][j] /= pivote
+        b[i] /= pivote
+        imprimirSistema(a, b, "División")
+
+        #Reducción
+        for k in range(n):
+            if i != k:
+                #Se reduce
+                valorAux = -a[k][i]
+                for j in range(n):
+                    a[k][j] += a[i][j] * valorAux
+                b[k] += b[i] * valorAux
+        imprimirSistema(a, b, "Reducción")
+    
+    return b
+
+a = [[0, 2, 0], [4, -1, 0], [3, 2, -2]]
+b = [7, 18, 16]
+x = gaussJordan(a, b)
+
+print("Respuesta:")
+for i in range(len(x)):
+    print("x" + str(i+1), "=", x[i])
+
+#Pruebas
+print("\nPruebas:")
+for i in range(len(b)):
+    valorAux = b[i]
+    for j in range(len(b)):
+        valorAux -= a[i][j] * x[j]
+    print("Test", i + 1, "=", valorAux)
