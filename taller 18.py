@@ -32,7 +32,7 @@ r=((r2)**(1/2))*100
 print(f"Desviacion estandar(Sy): {Sy}")
 print(f"Error estandar de la estimacion(Sy/x): {Sy_x}")
 print(f"Coeficiente de determinacion(r^2): {r2}")
-print(f"Coeficiente de correlacion(r %): {r}")
+print(f"Coeficiente de correlacion(r): {r}%")
 plt.scatter(x, y, color='b', label=f'Datos originales')
 plt.plot(x, y_pred, color='r', label=f'Linea de regresion')
 plt.title('Gráfica de y vs x')
