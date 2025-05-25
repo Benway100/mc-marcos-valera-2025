@@ -103,7 +103,7 @@ def hacer_regresion():
         return
 
     n = len(x)
-    grado = 0
+    grado = 1
 
     while True:
         A = [[sum(xi**(i+j) for xi in x) for j in range(grado+1)] for i in range(grado+1)]
@@ -118,6 +118,7 @@ def hacer_regresion():
         r2 = calcular_r2(y, y_est)
 
         formula = " + ".join([f"{c:.4f}x^{i}" if i > 0 else f"{c:.4f}" for i, c in enumerate(coef)])
+        
 
         regresiones.append((f"Polinomial grado {grado}", coef, None, r2, f, f"y = {formula}"))
 
@@ -125,7 +126,7 @@ def hacer_regresion():
             mejor_r2 = r2
             mejor_index = len(regresiones) - 1
 
-        if r2 >= 5:
+        if r2 >= .95:
             break
 
         grado += 1
@@ -152,6 +153,7 @@ def mostrar_grafica():
     y_vals = [funcion(xi) for xi in x_vals]
     ax.plot(x_vals, y_vals, color='red', label=nombre)
     ax.set_title(f"{desc}\nR² = {r2:.4f}")
+    print(f"Polinomial grado {nombre}: {desc}")
     ax.legend()
     ax.grid(True)
 
